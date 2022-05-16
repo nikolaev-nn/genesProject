@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Регистрация</title>
+    <style>
+        .error {
+            margin-top: 15px;
+            color: red;
+        }
+
+        .block {
+            width: 300px;
+            padding: 10px;
+        }
+
+        .input-row {
+            float: right;
+        }
+
+    </style>
+</head>
+<body>
+
+{#<div th:text="${message}" style="color: red"></div>#}
+<a href="/login">Войти в аккаунт</a>
+
+<br>
+<hr>
+
+{#<div th:text="${err}" style="color: red">#}
+{#    Некорректный email#}
+{#</div>#}
+
+<br>
+
+<h1 style="color: #ff5733; text-decoration: underline; font-style: italic;">Зарегистрироваться</h1>
+
+<form action="/registration" method="post">
+    <div class="block">
+        <label> Почта :
+            <input class="input-row" type="text" name="email"/>
+        </label>
+{#        <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>#}
+    </div>
+
+    <div class="block">
+        <label> Имя :
+            <input class="input-row" type="text" name="firstName"/>
+        </label>
+{#        <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>#}
+    </div>
+
+    <div class="block">
+        <label> Фамилия :
+            <input class="input-row" type="text" name="lastName"/>
+        </label>
+{#        <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>#}
+    </div>
+
+    <div class="block">
+        <label> Пароль:
+            <input class="input-row" type="password" name="password"/>
+        </label>
+{#        <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>#}
+    </div>
+
+    <div class="block">
+        <input type="submit" value="Зарегистрироваться"/>
+    </div>
+</form>
+
+</body>
+</html>

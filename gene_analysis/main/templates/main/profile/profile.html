@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
+    <link rel="stylesheet" th:href="@{css/bootstrap-reboot.min.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap-reboot.rtl.min.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/main.css}">
+</head>
+<body>
+
+<div th:insert="fragments/header::header"></div>
+
+<div style="padding: 40px;">
+    <a href="/profile/settings" style="color:red; font-weight:bold;">Change profile</a>
+    <h1><b th:text="${user.firstName}"></b> <b th:text="${user.lastName}"></b></h1>
+    <div th:if="${#lists.isEmpty(user.favourites)}"><h1 style="color: red;">List is empty</h1></div>
+    <div th:unless="${not #lists.isEmpty(user.favourites)}">
+        <div th:each="favourite: ${user.favourites}">
+            <span th:text="${favourite}"></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

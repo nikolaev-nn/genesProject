@@ -1,0 +1,39 @@
+{% load static %}
+<header class="header-default">
+    <div class="container-fluid p-0">
+        <div class="header__body d-flex justify-content-between align-items-center">
+            <a href="/" class="header__logo">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="image"><img src="{% static 'main/img/logo.png' %}" class="img-fluid" alt="Logo"></div>
+                    <div class="logo-caption">
+                        <p class="logo-caption__header">FindGene</p>
+                        <hr class="logo-caption__hr">
+                        <p class="logo-caption__text">Find your genes</p>
+                    </div>
+                </div>
+            </a>
+            <div class="header__burger">
+                <img src="{% static 'main/img/burger.png' %}" alt="Burger">
+            </div>
+            <nav class="header__menu">
+                <ul class="header__list">
+                    <li class="header__link">
+                        <a href="/help">Help</a>
+                    </li>
+                    <li class="header__link">
+                        <a href="/about">About</a>
+                    </li>
+                    <li class="header__link">
+                        <a href="/profile">Profile</a>
+                    </li>
+                    <li class="header__link">
+                        <a href="login/">
+                            <img src="{% static 'main/img/personal.png' %}" class="header__icon" alt="Personal">
+                            Sign in
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

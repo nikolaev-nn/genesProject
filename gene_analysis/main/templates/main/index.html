@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FindGene | Find your genes</title>
+    {% include 'main/fragments/styles.html' %}
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="container-fluid p-0">
+            <div class="header__body d-flex justify-content-between align-items-center">
+                <a href="/" class="header__logo">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="image"><img src="{% static 'main/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </div>
+                        <div class="logo-caption">
+                            <p class="logo-caption__header">FindGene</p>
+                            <hr class="logo-caption__hr">
+                            <p class="logo-caption__text">Find your genes</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="header__burger">
+                    <img src="{% static 'main/img/burger.png' %}" alt="Burger">
+                </div>
+                <nav class="header__menu">
+                    <ul class="header__list">
+                        <li class="header__link">
+                            <a href="/help">Help</a>
+                        </li>
+                        <li class="header__link">
+                            <a href="/about">About</a>
+                        </li>
+                        <li class="header__link">
+                            <a href="/profile">Profile</a>
+                        </li>
+                        <li class="header__link">
+                            <a href="/login">
+                                <img src="{% static 'main/img/personal.png' %}" class="header__icon" alt="Personal">
+                                Sign in
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="header__content text-center position-absolute w-100">
+            <h1 class="header__title m-0">Find your gene</h1>
+            <p class="subtitle-text">Explore genes simply and quickly</p>
+            <div class="container-search m-auto">
+                <form action="/genes" method="post">
+                    <div class="form-group has-search">
+                        <img src="{% static 'main/img/search.png' %}" class="form-control-feedback" alt="Search">
+                        <label for="search"><input type="search" name="search" id="search" class="form-control"
+                                                   placeholder="Search by genes..."></label>
+                    </div>
+                </form>
+                <form action="/genes" method="post">
+                    <div class="form-group has-search">
+                        <img src="{% static 'main/img/search.png' %}" class="form-control-feedback" alt="Search">
+                        <label for="search"><input type="search" name="randomSearch" id="randomSearch" class="form-control"
+                                                   placeholder="Search by genes..."></label>
+                    </div>
+                </form>
+                <p class="help-text">Examples:</p>
+            </div>
+        </div>
+    </header>
+    <main class="page">
+        <section class="page__section page__section_light page__section_premium" id="premium">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-xl-5 col-lg-6">
+                        <img src="{% static 'main/img/woman.png' %}" alt="Woman">
+                    </div>
+                    <div class="content col-xl-7 col-lg-6">
+                        <h2 class="page-title">FindGene PREMIUM</h2>
+                        <p class="subtitle-text">Find your genes without limits</p>
+                        <div class="advantages">
+                            <div class="advantages__item">
+                                <img src="{% static 'main/img/check.png' %}" alt="Check">
+                                <p class="d-inline-block">Find for more than 10 genes per query</p>
+                            </div>
+                            <div class="advantages__item">
+                                <img src="{% static 'main/img/check.png' %}" alt="Check">
+                                <p class="d-inline-block">Save queries to Favorites in your personal account</p>
+                            </div>
+                        </div>
+                        <button class="start-btn">Get started for free</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="page__section page__section_dark page__section_about" id="about">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-xl-8 col-lg-6">
+                        <h2 class="page-title text-center">About the service</h2>
+                        <p class="page-text">FindGen is an integrated, searchable database that provides comprehensive
+                            and user-friendly information
+                            about human genes. When searching for a gene, neighbors are also given. The service builds
+                            diagrams that can be scaled,
+                            save images for use in scientific articles, and much more.</p>
+                        <div class="facts">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="blue-box">
+                                        <p class="blue-box__text">There are more than 12,000 genes in the database of
+                                            our service</p>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="blue-box d-flex justify-content-center align-items-center">
+                                        <p class="blue-box__text">Ability to save frequently used queries</p>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="blue-box d-flex justify-content-center align-items-center">
+                                        <p class="blue-box__text">Ease of use</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 text-end">
+                        <img src="{% static 'main/img/man.png' %}" alt="Man">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="page__section page__section_light page__section_documentation" id="documentation">
+            <div class="container-fluid p-0">
+                <h2 class="page-title text-center">Reference information</h2>
+                <div class="row g-0">
+                    <div class="col-xl-4">
+                        <div class="">
+
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                    </div>
+                    <div class="col-xl-4">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer page__section_dark">
+        <div class="container">
+            <div class="row justify-content-between align-items-start">
+                <div class="col-xl-4">
+                    <p class="footer__header">Documentation</p>
+                    <nav class="footer__menu">
+                        <ul class="footer__list">
+                            <li class="footer__link">
+                                <a href="#">How to get started</a>
+                            </li>
+                            <li class="footer__link">
+                                <a href="#">How to get full access to the service</a>
+                            </li>
+                            <li class="footer__link">
+                                <a href="#">Working with a personal account</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xl-4">
+                    <p class="footer__header">Information</p>
+                    <nav class="footer__menu">
+                        <ul class="footer__list">
+                            <li class="footer__link">
+                                <a href="#">Privacy policy</a>
+                            </li>
+                            <li class="footer__link">
+                                <a href="#">About</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xl-4">
+                    <p class="footer__header">Still have questions?</p>
+                    <p class="footer__text">support@index.com</p>
+
+                </div>
+                <div class="col-xl-12">
+                    <div class="copyright d-flex justify-content-between align-items-start">
+                        <p class="footer__text">© 2022 FindGene. All rights reserved.</p>
+                        <p class="footer__text">Made by 9 team</p>
+                        <p class="footer__text">Icons by <a href="https://tilda.cc/ru/">Tilda</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>#}
+</body>
+</html>
