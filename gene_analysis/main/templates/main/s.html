@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <form action="/genes" method="post">
+        <div class="form-group has-search">
+            <img src="{% static 'main/img/search.png' %}" class="form-control-feedback" alt="Search">
+            <label for="search"><input type="search" name="search" id="search" class="form-control"
+                                       placeholder="Search by genes..."></label>
+        </div>
+    </form>
+    <form action="/genes" method="post">
+        <div class="form-group has-search">
+            <label for="search"><input type="search" name="randomSearch" id="randomSearch"
+                                       class="form-control"
+                                       placeholder="Type number..."></label>
+        </div>
+    </form>
+
+    <div class="diagram" id="reportPage">
+        <canvas id="myChart"
+                style="width:100%;max-width:1000px;margin: 0 auto; background-color:white;">
+        </canvas>
+    </div>
+    <div class="col-xl-12">
+        <button class="diagram-btn" type="submit"><img src="{% static 'main/img/favorite.png' %}"></button>
+        <button class="diagram-btn"><img src="{% static 'main/img/print.png' %}"></button>
+        <button class="diagram-btn" id="downloadPdf"><img src="{% static 'main/img/save.png' %}"></button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
+<script src="../../static/main/js/genes.js"></script>
+<script src="../../static/main/js/chartInteraction.js"></script>
+<script src="../../static/main/js/search.js"></script>
+</body>
+</html>
