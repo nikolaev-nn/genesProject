@@ -8,7 +8,6 @@
 <body>
 <div class="wrapper">
     {% include 'main/fragments/header.html' %}
-
     <main class="page">
         <section class="page__section page__section_dark page__section_diagram" id="diagram">
             <div class="container">
@@ -19,11 +18,19 @@
                     <div class="col-xl-12">
                         <div class="diagram" id="reportPage">
                             <canvas id="myChart"
-                                    style="width:100%;max-width:1000px;margin: 0 auto; background-color:white;"></canvas>
+                                    style="width:100%;max-width:1000px;margin: 0 auto; background-color:white;">
+                            </canvas>
                         </div>
                     </div>
                     <div class="col-xl-12">
-                        <button class="diagram-btn" type="submit"><img src="{% static 'main/img/favorite.png' %}"></button>
+
+                        <form method="POST" class="diagram-btn" id="save-to-favourites">
+                            {% csrf_token %}
+                            <button class="diagram-btn" type="submit">
+                                <img src="{% static 'main/img/favorite.png' %}">
+                            </button>
+                        </form>
+
                         <button class="diagram-btn"><img src="{% static 'main/img/print.png' %}"></button>
                         <button class="diagram-btn" id="downloadPdf"><img src="{% static 'main/img/save.png' %}">
                         </button>
@@ -97,11 +104,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/1.1.1/chartjs-plugin-zoom.min.js"></script>
 <script src="{% static 'main/js/chartInteraction.js' %}" type="text/javascript"></script>
 
 <script>
+    $(document).ready(function () {
+        $('#save-to-favourites').submit(function () {
+            $.ajax({
+                data: JSON.stringify(genes),
+                dataType: 'json',
+                type: 'POST',
+                url: "/save-to-favourites",
+                success: function (response) {
+                      alert("Data saved successfully!");
+                  },
+                error: function (response) {
+                    alert(response.name);
+                }
+            });
+            return false;
+        });
+    })
+
     function getRandomColor() {
         const randomValue = Math.floor(Math.random() * 255);
         return `hsl(${randomValue}, 100%, 50%)`
@@ -119,10 +144,10 @@
         return data;
     }
 
-    const genes = {{ genes|safe }};
+    const genes = {{genes|safe}};
     let datasets = [];
     let coordsDict = {};
-    const indexes = {{ labels }};
+    const indexes = {{labels}};
 
     for (let gene of genes) {
         const x = gene['xcoord'];
@@ -176,7 +201,6 @@
                         },
                         label: function (chart) {
                             return ""
-                            // return getInfo(chart)["description"]
                         },
                     },
                 },
@@ -190,6 +214,14 @@
                         },
                     }
                 },
+            },
+            scales: {
+                x: {
+                    display: false
+                },
+                y: {
+                    display: false
+                }
             }
         },
     }
@@ -213,16 +245,6 @@
     ctx.onclick = clickHandler;
 </script>
 
-<!--
-<script>
-    var queryString = location.search
-    let params = new URLSearchParams(queryString)
-    let search = params.get("search")
-
-    let favouritesForm = document.getElementById('favouritesForm');
-    favouritesForm.value = search;
-</script>
--->
 
 </body>
 </html>

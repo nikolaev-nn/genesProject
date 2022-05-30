@@ -27,9 +27,13 @@
                         <a href="/profile">Profile</a>
                     </li>
                     <li class="header__link">
-                        <a href="login/">
+                        <!--                        <a href="login/">-->
+                        <!--                            Sign in-->
+                        <!--                        </a>-->
+                        <a href="{% if not request.user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}">
                             <img src="{% static 'main/img/personal.png' %}" class="header__icon" alt="Personal">
-                            Sign in
+                            {% if not request.user.is_authenticated %}Sign in{% else %}Account ({{ user.username }})
+                            {% endif %}
                         </a>
                     </li>
                 </ul>

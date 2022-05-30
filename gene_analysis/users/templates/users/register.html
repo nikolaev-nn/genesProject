@@ -1,0 +1,38 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="col-xxl-5 m-auto">
+        {% if not request.user.is_authenticated %}
+        <div class="form-signup">
+            <h1 class="page-title">Registration</h1>
+            {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error'%}
+                <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% endif %}
+            {% if message.tags == 'success'%}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <button class="w-100 btn btn-lg btn-primary send-btn" type="submit" name="register">Sign Up</button>
+            </form>
+            <p class="text-center pt-4"><a href="{% url 'login' %}" class="page__text">Log In</a></p>
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">You are logged into the system!</div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

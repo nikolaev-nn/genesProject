@@ -111,8 +111,8 @@ def get_genes(genes):
     coord_and_labels = pd.concat([coord, pd.DataFrame(clusterer.labels_, columns=['labels'])], axis=1)
 
     result_df = pd.concat([summary_genes, coord_and_labels], axis=1).rename(columns={0: 'xcoord', 1: 'ycoord', 'original_request': 'originalRequest',
-                                                                                     'function': 'Function'})
+                                                                                     'function': 'Function', 'index': 'gene_id'})
     print(result_df.columns)
-    result_df = result_df[['originalRequest', 'Function', 'xcoord', 'ycoord', 'labels']]
+    result_df = result_df[['originalRequest', 'Function', 'xcoord', 'ycoord', 'labels', 'gene_id']]
     unique_labels = list(result_df['labels'].unique())
     return result_df.to_json(orient='records'), unique_labels
