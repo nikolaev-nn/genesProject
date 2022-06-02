@@ -1,28 +1,6 @@
 from django.db import models
 
 
-class UserRole(models.Model):
-    user = models.ForeignKey('UserTable', models.DO_NOTHING)
-    roles = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'user_role'
-
-
-class UserTable(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    active = models.BooleanField(blank=True, null=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
-    first_name = models.CharField(max_length=255, blank=True, null=True)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
-    password = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'user_table'
-
-
 class Genes(models.Model):
     index = models.BigIntegerField(primary_key=True)
     unnamed_0 = models.BigIntegerField(db_column='Unnamed: 0', blank=True, null=True)
@@ -44,9 +22,10 @@ class Genes(models.Model):
         db_table = 'genes'
 
 
+'''
 class FavoriteGroup(models.Model):
     group_id = models.BigIntegerField(primary_key=True)
-    user_id = models.ForeignKey(UserTable, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -63,3 +42,4 @@ class Favorite(models.Model):
     class Meta:
         managed = False
         db_table = 'favorite'
+'''
