@@ -7,7 +7,8 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
 """
 
-import os, sys
+import os
+import sys
 
 sys.path.append('/usr/lib/python3.8/site-packages')
 sys.path.append('/usr/lib/python3.9')

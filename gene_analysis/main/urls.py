@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('genes', views.genes, name='genes'),
-    path('save-to-favourites', views.save_favourites, name='save_favourites'),
+    path('check-execution', views.check_execution, name="check-execution")
+    # path('save-to-favourites', views.save_favourites, name='save_favourites'),
 ]

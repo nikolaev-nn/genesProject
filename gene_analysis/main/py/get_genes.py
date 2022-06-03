@@ -6,13 +6,21 @@ from tqdm.notebook import tqdm
 from transformers import AutoTokenizer, AutoModel
 from umap import UMAP
 
+from gene_analysis.celery import app
 
 tokenizer = AutoTokenizer.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
 model = AutoModel.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
 
 
+@app.task
+def test(x, y):
+    return x + y
+
+
+@app.task(task_track_started=True)
 def get_genes(genes):
-    summary_genes = pd.DataFrame.from_records(genes.values())
+    # summary_genes = pd.DataFrame.from_records(genes)
+    summary_genes = pd.DataFrame.from_dict(genes, orient="index")
     if 5 >= len(summary_genes) >= 0:
         return None
 
@@ -110,9 +118,9 @@ def get_genes(genes):
     clusterer.fit(coord)
     coord_and_labels = pd.concat([coord, pd.DataFrame(clusterer.labels_, columns=['labels'])], axis=1)
 
-    result_df = pd.concat([summary_genes, coord_and_labels], axis=1).rename(columns={0: 'xcoord', 1: 'ycoord', 'original_request': 'originalRequest',
-                                                                                     'function': 'Function', 'index': 'gene_id'})
-    print(result_df.columns)
+    result_df = pd.concat([summary_genes, coord_and_labels], axis=1).rename(
+        columns={0: 'xcoord', 1: 'ycoord', 'original_request': 'originalRequest',
+                 'function': 'Function', 'index': 'gene_id'})
     result_df = result_df[['originalRequest', 'Function', 'xcoord', 'ycoord', 'labels', 'gene_id']]
     unique_labels = list(result_df['labels'].unique())
     return result_df.to_json(orient='records'), unique_labels

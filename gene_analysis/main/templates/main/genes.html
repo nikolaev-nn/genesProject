@@ -109,23 +109,42 @@
 <script src="{% static 'main/js/chartInteraction.js' %}" type="text/javascript"></script>
 
 <script>
-    $(document).ready(function () {
-        $('#save-to-favourites').submit(function () {
-            $.ajax({
-                data: JSON.stringify(genes),
-                dataType: 'json',
-                type: 'POST',
-                url: "/save-to-favourites",
-                success: function (response) {
-                      alert("Data saved successfully!");
-                  },
-                error: function (response) {
-                    alert(response.name);
-                }
-            });
-            return false;
+    $('#save-to-favourites').submit(function () {
+        $.ajax({
+            data: JSON.stringify(genes),
+            dataType: 'json',
+            type: 'POST',
+            url: "/save-to-favourites",
+            success: function (response) {
+                alert("Data saved successfully!");
+            },
+            error: function (response) {
+                alert(response.name);
+            }
         });
-    })
+        return false;
+    });
+
+    let checkExecution = setInterval(() => {
+        $.ajax({
+            data: {"csrfmiddlewaretoken": "{{ csrf_token }}", "task_id": "{{task_id}}"},
+            dataType: 'json',
+            type: 'POST',
+            url: "{% url 'check-execution' %}",
+            success: function (data) {
+                if (!data.status){
+                    console.log(data);
+                    //setGenes(data);
+                    console.log("success!");
+                } else {
+                    console.log(data.status);
+                }
+            },
+            error: function (data) {
+                console.log(data.error);
+            }
+        });
+        }, 10000);
 
     function getRandomColor() {
         const randomValue = Math.floor(Math.random() * 255);
@@ -144,105 +163,107 @@
         return data;
     }
 
-    const genes = {{genes|safe}};
-    let datasets = [];
-    let coordsDict = {};
-    const indexes = {{labels}};
+    function setGenes(g, labels) {
+        const genes = g;
+        let datasets = [];
+        let coordsDict = {};
+        const indexes = labels;
 
-    for (let gene of genes) {
-        const x = gene['xcoord'];
-        const y = gene['ycoord'];
-        const title = gene['originalRequest'];
-        const description = gene['Function'];
+        for (let gene of genes) {
+            const x = gene['xcoord'];
+            const y = gene['ycoord'];
+            const title = gene['originalRequest'];
+            const description = gene['Function'];
 
-        let index = 0;
-        for (let i of indexes) {
-            if (i === gene["labels"]) {
-                if (coordsDict[index] === undefined) {
-                    coordsDict[index] = [{x, y, title, description}]
-                } else {
-                    coordsDict[index].push({
-                        x, y, title, description
-                    });
+            let index = 0;
+            for (let i of indexes) {
+                if (i === gene["labels"]) {
+                    if (coordsDict[index] === undefined) {
+                        coordsDict[index] = [{x, y, title, description}]
+                    } else {
+                        coordsDict[index].push({
+                            x, y, title, description
+                        });
+                    }
                 }
+                index++;
             }
-            index++;
         }
-    }
 
-    Object.keys(coordsDict).forEach(function (key) {
-        datasets.push(
-            {
-                datasetIndex: parseInt(key),
-                pointRadius: 4,
-                pointBackgroundColor: getRandomColor(),
-                borderColor: "black",
-                data: coordsDict[key],
+        Object.keys(coordsDict).forEach(function (key) {
+            datasets.push(
+                {
+                    datasetIndex: parseInt(key),
+                    pointRadius: 4,
+                    pointBackgroundColor: getRandomColor(),
+                    borderColor: "black",
+                    data: coordsDict[key],
 
-            }
-        );
-    });
+                }
+            );
+        });
 
-    const ctx = document.getElementById("myChart");
+        const ctx = document.getElementById("myChart");
 
-    let config = {
-        type: "scatter",
-        data: {
-            datasets: datasets
-        },
-        options: {
-            animation: false,
-            plugins: {
-                legend: {display: false},
-                tooltip: {
-                    callbacks: {
-                        title: function (chart) {
-                            return getInfo(chart[0])["title"];
-                        },
-                        label: function (chart) {
-                            return ""
+        let config = {
+            type: "scatter",
+            data: {
+                datasets: datasets
+            },
+            options: {
+                animation: false,
+                plugins: {
+                    legend: {display: false},
+                    tooltip: {
+                        callbacks: {
+                            title: function (chart) {
+                                return getInfo(chart[0])["title"];
+                            },
+                            label: function (chart) {
+                                return ""
+                            },
                         },
                     },
-                },
-                zoom: {
                     zoom: {
-                        wheel: {
-                            enabled: true,
-                        },
-                        pinch: {
-                            enabled: true
-                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
                     }
-                },
-            },
-            scales: {
-                x: {
-                    display: false
-                },
-                y: {
-                    display: false
                 }
-            }
-        },
-    }
-
-    const myChart = new Chart(
-        ctx,
-        config,
-    );
-
-    function clickHandler(click) {
-        const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true)
-        if (points.length !== 0) {
-            const newChart = {datasetIndex: points[0].datasetIndex, parsed: points[0].element['$context'].parsed}
-            const newData = getInfo(newChart);
-            console.log(newData);
-            document.getElementById("title").textContent = newData['title'];
-            document.getElementById("description").textContent = newData['description'];
+            },
         }
-    }
 
-    ctx.onclick = clickHandler;
+        const myChart = new Chart(
+            ctx,
+            config,
+        );
+
+        function clickHandler(click) {
+            const points = myChart.getElementsAtEventForMode(click, 'nearest', {intersect: true}, true)
+            if (points.length !== 0) {
+                const newChart = {datasetIndex: points[0].datasetIndex, parsed: points[0].element['$context'].parsed}
+                const newData = getInfo(newChart);
+                console.log(newData);
+                document.getElementById("title").textContent = newData['title'];
+                document.getElementById("description").textContent = newData['description'];
+            }
+        }
+
+        ctx.onclick = clickHandler;
+    }
 </script>
 
 
