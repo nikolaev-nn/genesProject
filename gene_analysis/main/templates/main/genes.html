@@ -9,45 +9,35 @@
 <div class="wrapper">
     {% include 'main/fragments/header.html' %}
     <main class="page">
-        <section class="page__section page__section_dark page__section_diagram" id="diagram">
-            <div class="container">
-                <p class="subtitle-text text-center">In this section you can view information about the gene. You can
-                    save the request, print it out
-                    or add it to favorites</p>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="diagram" id="reportPage">
-                            <canvas id="myChart"
-                                    style="width:100%;max-width:1000px;margin: 0 auto; background-color:white;">
-                            </canvas>
+		<section class="page__section page__section_dark page__section_diagram" id="diagram">
+			<div class="container">
+				<p class="subtitle-text text-center">In this section you can view information about the gene.</p>
+				<p class="subtitle-text text-center mb-4">You can save the request, print it out or add it to favorites</p>
+				<div class="row">
+					<div class="col-xl-8">
+						<div class="blue-box">
+							<h2>Diagram</h2>
+							<div class="diagram" id="reportPage">
+								<canvas id="myChart"
+										style="width:100%;max-width:1000px;margin: 0 auto; background-color:white;">
+								</canvas>
+							</div>
+							<button class="diagram-btn"><img src="{% static 'main/img/favorites.png' %}"></button>
+							<button class="diagram-btn"><img src="{% static 'main/img/print.png' %}"></button>
+							<button class="diagram-btn" id="downloadPdf"><img src="{% static 'main/img/save.png' %}"></button>
+						</div>
+						<div class="blue-box">
+							<h2>Legend</h2>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="blue-box">
+							<h2 id="title">Gen</h2>
+							<p class="page-text" id="description">Click on a gene in the diagram for details</p>
+							<p class="page-text"><span>Organism: Homo Sapiens</span></p>
+							<h2>Our request</h2>
+							<p class="page-text" id="request"></p>
                         </div>
-                    </div>
-                    <div class="col-xl-12">
-
-                        <form method="POST" class="diagram-btn" id="save-to-favourites">
-                            {% csrf_token %}
-                            <button class="diagram-btn" type="submit">
-                                <img src="{% static 'main/img/favorite.png' %}">
-                            </button>
-                        </form>
-
-                        <button class="diagram-btn"><img src="{% static 'main/img/print.png' %}"></button>
-                        <button class="diagram-btn" id="downloadPdf"><img src="{% static 'main/img/save.png' %}">
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-        <section class="page__section page__section_light page__section_description" id="descriptionBlock">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h2>Our request</h2>
-                        <p class="page-text"></p>
-                        <h2 id="title">Gen</h2>
-                        <p class="page-text" id="description">Click on a gene in the diagram for details</p>
-                        <p class="page-text">Organism: Homo Sapiens</p>
                     </div>
                 </div>
             </div>
@@ -85,15 +75,14 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-4 text-end">
                     <p class="footer__header">Still have questions?</p>
-                    <p class="footer__text">support@index.com</p>
+                    <p class="footer__text">yarnik2000@yandex.ru</p>
                 </div>
                 <div class="col-xl-12">
                     <div class="copyright d-flex justify-content-between align-items-start">
                         <p class="footer__text">© 2022 FindGene. All rights reserved.</p>
                         <p class="footer__text">Made by 9 team</p>
-                        <p class="footer__text">Icons by <a href="https://tilda.cc/ru/">Tilda</a></p>
                     </div>
                 </div>
             </div>

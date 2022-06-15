@@ -33,9 +33,6 @@
                             <a href="/about">About</a>
                         </li>
                         <li class="header__link">
-                            <a href="/profile">Profile</a>
-                        </li>
-                        <li class="header__link">
                             <a href="{% if not request.user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}">
                                 <img src="{% static 'main/img/personal.png' %}" class="header__icon" alt="Personal">
                                 {% if not request.user.is_authenticated %}Sign in{% else %}Account ({{ user.username }})
@@ -47,58 +44,64 @@
             </div>
         </div>
         <div class="header__content text-center position-absolute w-100">
-            <h1 class="header__title m-0">Find your gene</h1>
+            <h1 class="header__title">Find your genes</h1>
             <p class="subtitle-text">Explore genes simply and quickly</p>
             <div class="container-search m-auto">
-                <form action="/genes" method="post">
-                    <div class="form-group has-search">
-                        <img src="{% static 'main/img/search.png' %}" class="form-control-feedback" alt="Search">
-                        <label for="search"><input type="search" name="search" id="search" class="form-control"
-                                                   placeholder="Search by genes..."></label>
-                    </div>
-                </form>
-                <p class="help-text" style="padding: 0 0 20px 0;">Examples:
-                    <u>
+                <p class="help-text">Examples:
+                    <strong>
                         {% for gene in genes %}
                         {{gene}}{% if not loop.last %}, {% endif %}
                         {% endfor %}
-                    </u>
+                    </strong>
                 </p>
-            </div>
-            <div class="container-search m-auto">
                 <form action="/genes" method="post">
-                    <div class="form-group has-search">
-                        <label for="search"><input type="search" name="randomSearch" id="randomSearch"
-                                                   class="form-control"
-                                                   placeholder="Type number..."></label>
+                    <div class="group-form">
+                        <textarea type="search" name="search" id="search" class="form-control"
+                                  placeholder="Search by genes... (min. 6)"></textarea>
+                        <!--<input type="search" name="q" id="search" class="form-control" placeholder="Search by genes...">-->
+                        <button type="submit" class="feedback-btn">Search</button>
+                        <!--<img src="img/search.svg" class="form-control-feedback" alt="Search">-->
                     </div>
                 </form>
-                <div id="loader" hidden>
-                    <div class="text-center">
-                        <img src="{% static 'main/img/loader.gif' %}" class="loader" alt="Loader">
+                <form action="/genes" method="post">
+                    <div class="group-form">
+                        <input type="search" name="randomSearch" id="randomSearch" class="form-control"
+                                  placeholder="Search by genes... (min. 6)"/>
+                        <!--<input type="search" name="q" id="search" class="form-control" placeholder="Search by genes...">-->
+                        <button type="submit" class="feedback-btn">Search</button>
+                        <!--<img src="img/search.svg" class="form-control-feedback" alt="Search">-->
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </header>
+
     <main class="page">
         <section class="page__section page__section_light page__section_premium" id="premium">
             <div class="container-fluid p-0">
                 <div class="row g-0">
-                    <div class="col-xl-5 col-lg-6">
-                        <img src="{% static 'main/img/woman.png' %}" alt="Woman">
+                    <div class="col-xl-5 col-12">
+                        <img src="{% static 'main/img/woman.png' %}" class="img-fluid" alt="Woman">
                     </div>
-                    <div class="content col-xl-7 col-lg-6">
+                    <div class="content col-xl-7 col-12">
                         <h2 class="page-title">FindGene PREMIUM</h2>
                         <p class="subtitle-text">Find your genes without limits</p>
                         <div class="advantages">
-                            <div class="advantages__item">
-                                <img src="{% static 'main/img/check.png' %}" alt="Check">
+                            <div class="advantages__item d-flex align-items-center">
+                                <img src="{% static 'main/img/check.png' %}" class="check-img" alt="Check">
                                 <p class="d-inline-block">Find for more than 10 genes per query</p>
                             </div>
-                            <div class="advantages__item">
-                                <img src="{% static 'main/img/check.png' %}" alt="Check">
+                            <div class="advantages__item d-flex align-items-center">
+                                <img src="{% static 'main/img/check.png' %}" class="check-img" alt="Check">
                                 <p class="d-inline-block">Save queries to Favorites in your personal account</p>
+                            </div>
+                            <div class="advantages__item d-flex align-items-center">
+                                <img src="{% static 'main/img/check.png' %}" class="check-img" alt="Check">
+                                <p class="d-inline-block">Be the first to try new features</p>
+                            </div>
+                            <div class="advantages__item d-flex align-items-center">
+                                <img src="{% static 'main/img/check.png' %}" class="check-img" alt="Check">
+                                <p class="d-inline-block">Participate in beta testing</p>
                             </div>
                         </div>
                         <button class="start-btn">Get started for free</button>
@@ -109,36 +112,38 @@
         <section class="page__section page__section_dark page__section_about" id="about">
             <div class="container-fluid p-0">
                 <div class="row g-0">
-                    <div class="col-xl-8 col-lg-6">
+                    <div class="col-xl-8 col-12">
                         <h2 class="page-title text-center">About the service</h2>
                         <p class="page-text">FindGen is an integrated, searchable database that provides comprehensive
-                            and user-friendly information
-                            about human genes. When searching for a gene, neighbors are also given. The service builds
-                            diagrams that can be scaled,
-                            save images for use in scientific articles, and much more.</p>
+                            and user-friendly information about human genes. When searching for a gene, neighbors are
+                            also given. The service builds diagrams that can be scaled, save images for use in
+                            scientific articles, and much more.</p>
                         <div class="facts">
-                            <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="blue-box">
+                            <div class="row g-0 justify-content-center">
+                                <div class="col-xl-3 col-md-6 col-12">
+                                    <div class="text-center">
+                                        <img src="{% static 'main/img/database.svg' %}" alt="Database">
                                         <p class="blue-box__text">There are more than 12,000 genes in the database of
                                             our service</p>
                                     </div>
                                 </div>
-                                <div class="col-xl-6">
-                                    <div class="blue-box d-flex justify-content-center align-items-center">
-                                        <p class="blue-box__text">Ability to save frequently used queries</p>
+                                <div class="col-xl-3 col-md-6 col-12">
+                                    <div class="text-center">
+                                        <img src="{% static 'main/img/ok.svg' %}" alt="OK">
+                                        <p class="blue-box__text">Ease of use</p>
                                     </div>
                                 </div>
-                                <div class="col-xl-12">
-                                    <div class="blue-box d-flex justify-content-center align-items-center">
-                                        <p class="blue-box__text">Ease of use</p>
+                                <div class="col-xl-3 col-md-12 col-12">
+                                    <div class="text-center">
+                                        <img src="{% static 'main/img/bookmarks.svg' %}" alt="Bookmarks">
+                                        <p class="blue-box__text">Ability to save frequently used queries</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-6 text-end">
-                        <img src="{% static 'main/img/man.png' %}" alt="Man">
+                    <div class="col-xl-4 text-end">
+                        <img src="{% static 'main/img/man.png' %}" class="img-fluid" alt="Man">
                     </div>
                 </div>
             </div>
@@ -146,15 +151,42 @@
         <section class="page__section page__section_light page__section_documentation" id="documentation">
             <div class="container-fluid p-0">
                 <h2 class="page-title text-center">Reference information</h2>
-                <div class="row g-0">
-                    <div class="col-xl-4">
-                        <div class="">
-
+                <div class="row g-0 justify-content-center">
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="documentation-box position-relative">
+                            <img src="{% static 'main/img/info1.png' %}" class="img-fluid" alt="Document">
+                            <div class="documentation-box__title d-flex position-absolute">
+                                <p>How to get started</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-xl-4">
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <div class="documentation-box position-relative">
+                            <img src="{% static 'main/img/info2.png' %}" class="img-fluid" alt="Personal">
+                            <div class="documentation-box__title d-flex position-absolute">
+                                <p>Working with a personal account</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xl-4">
+                    <div class="col-xl-3 col-md-12">
+                        <div class="documentation-box position-relative">
+                            <img src="{% static 'main/img/info3.png' %}" class="img-fluid" alt="Access">
+                            <div class="documentation-box__title d-flex position-absolute">
+                                <p>How to get full access to the service</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-10 m-auto">
+                        <div class="subscribe text-center">
+                            <p class="subscribe__title">Subcribe to our news</p>
+                            <p class="subscribe__text">Get special offers and news from us first</p>
+                            <form>
+                                <div class="subscribe-form d-flex justify-content-center align-items-center">
+                                    <input type="text" class="subscribe-input" placeholder="Enter your E-mail">
+                                    <button class="subscribe-btn" type="submit">Subscribe</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,7 +195,7 @@
     <footer class="footer page__section_dark">
         <div class="container">
             <div class="row justify-content-between align-items-start">
-                <div class="col-xl-4">
+                <div class="col-xl-4 col-md-6">
                     <p class="footer__header">Documentation</p>
                     <nav class="footer__menu">
                         <ul class="footer__list">
@@ -179,7 +211,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-4 col-md-6 col-12">
                     <p class="footer__header">Information</p>
                     <nav class="footer__menu">
                         <ul class="footer__list">
@@ -192,21 +224,53 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-4 col-md-12 col-12 text-end">
                     <p class="footer__header">Still have questions?</p>
-                    <p class="footer__text">support@index.com</p>
+                    <p class="footer__text">yarnik2000@yandex.ru</p>
 
                 </div>
                 <div class="col-xl-12">
                     <div class="copyright d-flex justify-content-between align-items-start">
                         <p class="footer__text">© 2022 FindGene. All rights reserved.</p>
                         <p class="footer__text">Made by 9 team</p>
-                        <p class="footer__text">Icons by <a href="https://tilda.cc/ru/">Tilda</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+    <!-- Modal Form -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to personal account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pr-5 pl-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <form method="POST">
+                                    <div class="form-group text-center">
+                                        <input type="text" class="form-control" name="name" id="name">
+                                        <input type="text" class="form-control" name="phone" id="phone">
+                                        <button type="button" class="btn btn-primary">Sign in</button>
+                                    </div>
+                                </form>
+                                <div class="text-center">
+                                    <div id="infoMessage"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
