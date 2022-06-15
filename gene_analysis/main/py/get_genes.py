@@ -1,26 +1,32 @@
 import numpy as np
 import pandas as pd
 import torch
+import json
 from sklearn.cluster import DBSCAN
 from tqdm.notebook import tqdm
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, PreTrainedTokenizerFast
 from umap import UMAP
+import logging
 
 from gene_analysis.celery import app
 
-tokenizer = AutoTokenizer.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
-model = AutoModel.from_pretrained("bionlp/bluebert_pubmed_mimic_uncased_L-12_H-768_A-12")
+import os
 
+cwd = os.path.dirname(os.path.realpath(__file__))
+
+tokenizer = AutoTokenizer.from_pretrained(cwd + "/tokenizer")
+model = AutoModel.from_pretrained(cwd + "/model")
 
 @app.task
 def test(x, y):
     return x + y
 
 
-@app.task(task_track_started=True)
+@app.task(task_track_started=True, soft_time_limit=600, time_limit=900, worker_max_memory_per_child=500000)
 def get_genes(genes):
-    # summary_genes = pd.DataFrame.from_records(genes)
-    summary_genes = pd.DataFrame.from_dict(genes, orient="index")
+
+    summary_genes = pd.DataFrame.from_records(json.loads(genes))
+    # summary_genes = pd.DataFrame.from_dict(genes, orient="index")
     if 5 >= len(summary_genes) >= 0:
         return None
 
@@ -37,6 +43,7 @@ def get_genes(genes):
         input_id_chunks = list(input_id_chunks)
         mask_chunks = list(mask_chunks)
 
+
         for i in range(len(input_id_chunks)):
             input_id_chunks[i] = torch.cat([
                 torch.Tensor([101]), input_id_chunks[i], torch.Tensor([102])
@@ -52,18 +59,24 @@ def get_genes(genes):
                 ])
                 mask_chunks[i] = torch.cat([
                     mask_chunks[i], torch.Tensor([0] * pad_len)
-                ])
+                ]) 
 
         input_ids = torch.stack(input_id_chunks)
+        logging.warning('1')
         attention_mask = torch.stack(mask_chunks)
+        logging.warning('2')
         input_dict = {
             'input_ids': input_ids.long(),
             'attention_mask': attention_mask.int()
         }
-
-        output = model(**input_dict)
+        logging.warning('3')
+        output = model(input_ids.long(), attention_mask.int())
+        logging.warning('4')
         temp = output[1].detach().numpy()
+        logging.warning('5')
         list_of_tensors.append(temp)
+        
+    logging.warning('6')
 
     for i in tqdm(range(len(list_of_tensors))):
         a = np.empty(0)

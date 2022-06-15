@@ -25,7 +25,8 @@ def genes(request):
             genes_db = Genes.objects.filter(original_request__in=genes_request).distinct('original_request')
             if len(genes_db) > 5:
                 genes_json = serializers.serialize("json", genes_db)
-                task = get_genes.delay(genes_json)
+                result_json = json.dumps([e['fields'] for e in json.loads(genes_json)])
+                task = get_genes.delay(result_json)
                 # task = test.delay(2, 2)
                 return render(request, 'main/genes.html', {'task_id': task.task_id})
 
@@ -41,6 +42,7 @@ def genes(request):
     return render(request, 'main/errors/no-result.html')
 
 
+@csrf_exempt
 def check_execution(request):
     if request.method == 'POST':
         task_id = str(request.POST['task_id'])
@@ -57,14 +59,13 @@ def check_execution(request):
 
 # @csrf_exempt
 # def save_favourites(request):
-    # if request.method == 'POST' and request.user.is_authenticated:
-    # if request.method == 'POST':
-    #     save_json_to_database(list(request.POST.keys())[0], request.user)
-    #     return JsonResponse({}, status=200)
-    # elif request.method == 'POST' and not request.user.is_authenticated:
-    #     return JsonResponse({"name": "You need to log in"}, status=400)
-    # else:
-    #     return JsonResponse({"name": "Error, try again later"}, status=400)
+# if request.method == 'POST' and request.user.is_authenticated:
+#     save_json_to_database(list(request.POST.keys())[0], request.user)
+#     return JsonResponse({}, status=200)
+# elif request.method == 'POST' and not request.user.is_authenticated:
+#     return JsonResponse({"name": "You need to log in"}, status=400)
+# else:
+#     return JsonResponse({"name": "Error, try again later"}, status=400)
 
 
 def get_random_genes(random_value):
