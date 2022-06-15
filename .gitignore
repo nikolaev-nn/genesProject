@@ -83,3 +83,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+gene_analysis/main/py/model/config.json
+gene_analysis/main/py/model/pytorch_model.bin
+gene_analysis/main/py/tokenizer/special_tokens_map.json
+gene_analysis/main/py/tokenizer/tokenizer.json
+gene_analysis/main/py/tokenizer/tokenizer_config.json
+gene_analysis/main/py/tokenizer/vocab.txt
